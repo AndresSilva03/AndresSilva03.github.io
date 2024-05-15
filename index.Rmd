@@ -1,7 +1,7 @@
 ---
 title: "AndresSilva03"
 output: html_document
-date: "2024-05-15" ##Se pone lo que uno quiera
+date: "2024-05-15"
 ---
 
 ```{r setup, include=FALSE}
