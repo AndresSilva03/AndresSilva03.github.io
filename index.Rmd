@@ -5,11 +5,21 @@ date: "2024-05-15"
 output: html_document
 ---
 
+Inicialmente voy a llamar los paquetes que quiero usar en clase
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Llamar paquetes
+require(pacman)
+p_load(rio,tidyverse,mapview,osmdata,tmaptools)
+
+## data
+casa <- geocode_OSM("Universidad de los Andes", as.sf = T)
 ```
 
-## R Markdown
+A continuación voy a pintar el objeto **db** que contiene la geocodificación de `rcasa$query`
+
+```{r}
+mapview(casa)
+```
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
