@@ -14,16 +14,16 @@ rm(list=ls())
 require(pacman)
 p_load(pacman, rio, data.table, tidyverse,
        sf, rvest, ggplot2,
-       mapview, tmaptools, osmdata, viridis)
+       mapview, tmaptools, osmdata, viridis, skimr)
 
 ```
 
 
 
 Esta página contiene todo el código del último problem set del curso.
-
-## 1. Extraer información de internet:
-
+&nbsp;
+# 1. Extraer información de internet:
+&nbsp;
 
 #### 1.1. Obtener las URL
 ```{r 1.1}
@@ -42,7 +42,7 @@ url_full <- as.matrix(table$url)
 
 
 ```
-
+&nbsp;
 
 #### 1.2. Filtrar las URL
 ```{r 1.2}
@@ -53,7 +53,7 @@ url_full <- as.matrix(table$url)
 url_subset <- url_full
 
 ```
-
+&nbsp;
 
 #### 1.3. Extraer las tablas de los HTML:
 ```{r 1.3}
@@ -69,7 +69,7 @@ for (i in 1:length(url_subset)) {
 }
   
 ```
-
+&nbsp;
 
 #### 1.4. Preparar información:
 ```{r 1.4}
@@ -78,8 +78,10 @@ for (i in 1:length(url_subset)) {
 db_house <- rbindlist(lista_tablas, fill=TRUE, idcol=TRUE)
 
 ```
+&nbsp;
 
-## 2. Manipular información GIS:
+# 2. Manipular información GIS:
+&nbsp;
 
 
 #### 2.1. Cree un objeto sf:
@@ -88,7 +90,7 @@ db_house <- rbindlist(lista_tablas, fill=TRUE, idcol=TRUE)
 sf_house <- st_as_sf(db_house, coords = c("lon","lat"), crs = 4326)
 
 ```
-
+&nbsp;
 
 #### 2.2. Pintar mapa:
 ```{r 2.2}
@@ -103,23 +105,58 @@ bog <- bog$osm_multipolygons %>% subset(admin_level==9 & !osm_id %in% 16011743:1
 house_map <- ggplot() +   geom_sf(mapping = aes(),data = bog) + geom_sf(mapping = aes(color = price), data = sf_house) + scale_color_viridis(option = "D")
 
 ggsave("house_map.png", plot = house_map, width = 10, height = 8, dpi = 300)
-
 file.show("house_map.png")
 
-
+ggplot() +   geom_sf(mapping = aes(),data = bog) + geom_sf(mapping = aes(color = price), data = sf_house) + scale_color_viridis(option = "D") ##Esto lo puse al final solo para que se pueda visualizar en la página.
 
 ```
-
+&nbsp;
 
 
 
 ## 3. Bonos:
-
+&nbsp;
 #### 3.1 R-Markdown: todo fue realizado en RMD
+&nbsp;
 #### Estadísticas descriptivas:
 
 
-#### 3.2. HTML en github:
+```{r bono3.12}
 
+summary(db_house)
+
+```
+<p>En este summarize se pueden ver las estadísticas descriptivas preliminares de los datos de propiedades almacenados en las páginas web. En cuanto a las habitaciones, se puede ver que hay propiedades con solo una "room", así como hay algunos (o solo uno) con 12. No obstante, se puede ver que la media es de tres "rooms", y de acuerdo a los percentiles, encontrar una con un alto número de "rooms" como la de 12 es algo difícil en esta muestra. Lo mismo ocurre con los baños y los cuartos. Es importante notar que hay un mínimo de cero en los cuartos, lo que indica que hay una(s) edificacion(es) sin este espacio. </p>
+
+&nbsp;
+```{r bono 3.13}
+db_house <- db_house[,-3]##No permite ejecutar el group by si V1 esta duplicada. 
+db_house %>% group_by(bedrooms) %>%  summarise(frecuencia = n())
+
+```
+
+&nbsp;
+```{r bono 3.14}
+
+db_house %>% group_by(rooms) %>%  summarise(frecuencia = n())
+
+```
+
+
+```{r bono 3.15}
+
+db_house %>% group_by(bathrooms) %>%  summarise(frecuencia = n())
+
+```
+```{r bono 3.16}
+
+db_house %>% group_by(property_type) %>%  summarise(frecuencia = n())
+
+```
+
+
+&nbsp;
+#### 3.2. HTML en github:
+&nbsp;
 <A HREF="https://github.com/AndresSilva03/AndresSilva03.github.io"> Link hacia el repositorio de la página </A>
 
