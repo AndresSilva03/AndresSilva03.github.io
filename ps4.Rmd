@@ -1,6 +1,6 @@
 ---
 title: "Problem-set 4"
-author: "[202014837] Andres Silva"
+author: "[202014837] Andres Silva & [202022380] Juan Walteros"
 date: "2024-06-05"
 output: html_document
 ---
@@ -115,7 +115,7 @@ bog <- bog$osm_multipolygons %>% subset(admin_level==9 & !osm_id %in% 16011743:1
 
 house_map <- ggplot() +   geom_sf(mapping = aes(),data = bog) + geom_sf(mapping = aes(color = price), data = sf_house) + scale_color_viridis(option = "D")
 
-ggsave("house_map.png", plot = house_map, width = 10, height = 8, dpi = 300)
+ggsave("output/house_map.png", plot = house_map, width = 10, height = 8, dpi = 300)
 file.show("house_map.png")
 
 ggplot() +   geom_sf(mapping = aes(),data = bog) + geom_sf(mapping = aes(color = price), data = sf_house) + scale_color_viridis(option = "D") ##Esto lo puse al final solo para que se pueda visualizar en la página.
@@ -205,9 +205,37 @@ coef(lmodelo)[2] ## Este es el "beta" de regresión. En este caso nos explica so
 ```
 <p> Dado que la estrategia del gráfico no funciono, se puede observar que hay una correlación positiva por medio de la tabla y el valor "Estimate". Entre más cara la casa más habitaciones se espera que tenga (lo cual es intuitivo per había que confirmarlo estadísticamente). </p>
 
+&nbsp;
+
+```{r gráficoJF}
+
+ggplot(db_house, aes(x = property_type, y = price)) +
+  stat_summary(fun = mean, geom = "bar", fill = "black") +
+  labs(title = "Precio Promedio por Tipo",
+       x = "Tipo de Propiedad",
+       y = "Precio Promedio")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
 
 &nbsp;
+
 #### 3.2. HTML en github:
+
 &nbsp;
+
 <A HREF="https://github.com/AndresSilva03/AndresSilva03.github.io"> Link hacia el repositorio de la página </A>
+
+
+&nbsp;
+
+
+```{r output}
+
+export(db_house,"output/db_house.rds")
+
+
+```
+
 
