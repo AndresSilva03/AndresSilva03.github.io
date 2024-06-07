@@ -1,9 +1,13 @@
 ---
 title: "Problem-set 4"
-author: "Andres Silva"
+author: "[202014837] Andres Silva"
 date: "2024-06-05"
 output: html_document
 ---
+
+&nbsp;
+
+&nbsp;
 
 ```{r setup, echo = NULL}
 
@@ -18,11 +22,18 @@ p_load(pacman, rio, data.table, tidyverse,
 
 ```
 
+<center>
 
+<h1> Problem-Set 4 </h1>
+
+</center>
 
 Esta página contiene todo el código del último problem set del curso.
+
 &nbsp;
+
 # 1. Extraer información de internet:
+
 &nbsp;
 
 #### 1.1. Obtener las URL
@@ -114,10 +125,14 @@ ggplot() +   geom_sf(mapping = aes(),data = bog) + geom_sf(mapping = aes(color =
 
 
 
-## 3. Bonos:
+# 3. Bonos:
+
 &nbsp;
+
 #### 3.1 R-Markdown: todo fue realizado en RMD
+
 &nbsp;
+
 #### Estadísticas descriptivas:
 
 
@@ -134,6 +149,8 @@ db_house <- db_house[,-3]##No permite ejecutar el group by si V1 esta duplicada.
 db_house %>% group_by(bedrooms) %>%  summarise(frecuencia = n())
 
 ```
+<p> Para complementar lo dicho anteriormente, y ver como se distribuyen las viviendas según sus características, de hizo esta tabla de frecuencias. Se puede ver que las propiedades sin cuarto de dormir son 2, y que la gran mayoría se centra en 2, 3 y 4 habitaciones. </p>
+
 
 &nbsp;
 ```{r bono 3.14}
@@ -142,17 +159,51 @@ db_house %>% group_by(rooms) %>%  summarise(frecuencia = n())
 
 ```
 
+<p> De igual forma, las "rooms" también se concentran en estos valores, aunque no hay ninguno con cero "rooms". Hay que notar que hay demasiados missing values, más de la mitad de la muestra son missing values para esta variable. </p>
 
+
+&nbsp;
 ```{r bono 3.15}
 
 db_house %>% group_by(bathrooms) %>%  summarise(frecuencia = n())
 
 ```
+<p> No hay propiedades sin baño, y se puede ver que la mayoría tienen de 1 a 4 baños. Esta variable tiene bastantes missing values, aunque no tantos como las otras.  </p>
+
+
+&nbsp;
+
 ```{r bono 3.16}
 
 db_house %>% group_by(property_type) %>%  summarise(frecuencia = n())
 
 ```
+
+<p> Esta descriptiva es muy útil, se puede entender porque hay propiedades sin baño (pueden ser los lotes o depósitos). El hecho de que no hayan propiedades con cero "bedrooms" no quiere decir que haya cuartos para dormir en las oficinas, estos ceros pueden estar identificados como missing values. (La variable bedrooms SI tiene missing values, aunque no aparecen en la tabla). </p>
+
+
+&nbsp;
+
+```{r bono 3.17}
+
+lmodelo <- lm(db_house$price ~ db_house$bedrooms)
+             
+db_house$price2 <- ifelse(db_house$price < 1000000000, 1000000000, db_house$price) ##restrinjo la muestra osino el gráfico queda en escalas muy grandes.
+
+plot(db_house$bedrooms, db_house$price2)
+abline(a=coef(lmodelo)[1], b=coef(lmodelo)[2])
+
+
+```
+<p> Es difícil establecer una relación visual porque los precios son muy volátiles y el número de cuartos de dormir se acumula entre valores muy pequeños. </p>
+
+```{r sum}
+
+coef(lmodelo)[2] ## Este es el "beta" de regresión. En este caso nos explica solo una correlación, y es positiva
+
+
+```
+<p> Dado que la estrategia del gráfico no funciono, se puede observar que hay una correlación positiva por medio de la tabla y el valor "Estimate". Entre más cara la casa más habitaciones se espera que tenga (lo cual es intuitivo per había que confirmarlo estadísticamente). </p>
 
 
 &nbsp;
