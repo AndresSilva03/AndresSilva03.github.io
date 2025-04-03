@@ -6,17 +6,16 @@ output: html_document
 ---
 
 
-
-Inicialmente voy a llamar los paquetes que quiero usar en clase
-
-
-<img src="Andres Silva/Andres.jpeg" style="float: left;" />
-
-
 ```{r setup, include=FALSE}
+
+install.packages("fastmap")
+
 
 ```
 
+Inicialmente voy a llamar los paquetes que quiero usar en clase
+
+<img src="Andres Silva/Andres.jpeg" style="float: left;" />
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
